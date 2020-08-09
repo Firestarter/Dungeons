@@ -1,7 +1,7 @@
-package com.firestartermc.dungeons.commands;
+package com.firestartermc.dungeons.lobby.commands;
 
-import com.firestartermc.dungeons.DungeonsLobby;
-import com.firestartermc.dungeons.commands.base.BaseMultiCommand;
+import com.firestartermc.dungeons.lobby.DungeonsLobby;
+import com.firestartermc.dungeons.lobby.commands.base.BaseMultiCommand;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -18,6 +18,8 @@ public class NpcCommand extends BaseMultiCommand {
     public NpcCommand() {
         registerSubCommand("reload", new NpcReloadCommand());
         registerSubCommand("move", new NpcMoveCommand());
+        registerSubCommand("hide", new NpcHidingCommand());
+        registerSubCommand("show", new NpcHidingCommand());
     }
 
     private static class NpcMoveCommand implements TabExecutor {
@@ -57,8 +59,7 @@ public class NpcCommand extends BaseMultiCommand {
                 return true;
             }
 
-            DungeonsLobby.getNpcManager().despawn();
-            DungeonsLobby.getNpcManager().spawn();
+            DungeonsLobby.getNpcManager().reload();
 
             sender.sendMessage(DungeonsLobby.PREFIX + "Reloaded Dungeon NPC.");
             return true;
@@ -67,6 +68,32 @@ public class NpcCommand extends BaseMultiCommand {
         @Override
         public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
             return ImmutableList.of();
+        }
+    }
+
+    private static class NpcHidingCommand implements TabExecutor {
+
+        @Override
+        public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] strings) {
+            if (label.equalsIgnoreCase("hide")) {
+                if (DungeonsLobby.getNpcManager().hide()) {
+                    sender.sendMessage(DungeonsLobby.PREFIX + "NPC is now hidden.");
+                } else {
+                    sender.sendMessage(DungeonsLobby.PREFIX + "NPC is already hidden");
+                }
+            } else if (label.equalsIgnoreCase("show")) {
+                if (DungeonsLobby.getNpcManager().show()) {
+                    sender.sendMessage(DungeonsLobby.PREFIX + "NPC is now shown.");
+                } else {
+                    sender.sendMessage(DungeonsLobby.PREFIX + "NPC is already shown.");
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] strings) {
+            return null;
         }
     }
 }

@@ -18,6 +18,7 @@
     <modules>
         <module>lobby</module>
         <module>server</module>
+        <module>common</module>
     </modules>
 
     <dependencies>
@@ -32,11 +33,6 @@
             <artifactId>Kerosene</artifactId>
             <version>LATEST</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -1,6 +1,5 @@
-package com.firestartermc.dungeons.commands.base;
+package com.firestartermc.dungeons.lobby.commands.base;
 
-import com.firestartermc.dungeons.DungeonsLobby;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -28,7 +27,7 @@ public abstract class BaseMultiCommand implements TabExecutor {
     public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length > 0) {
             if (childCommands.containsKey(args[0])) {
-                return childCommands.get(args[0]).onCommand(commandSender, command, alias, Arrays.copyOfRange(args, 1, args.length));
+                return childCommands.get(args[0]).onCommand(commandSender, command, args[0], Arrays.copyOfRange(args, 1, args.length));
             }
         }
 
@@ -39,7 +38,7 @@ public abstract class BaseMultiCommand implements TabExecutor {
     public final @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length > 0) {
             if (childCommands.containsKey(args[0])) {
-                return childCommands.get(args[0]).onTabComplete(commandSender, command, alias, Arrays.copyOfRange(args, 1, args.length));
+                return childCommands.get(args[0]).onTabComplete(commandSender, command, args[0], Arrays.copyOfRange(args, 1, args.length));
             }
             return childCommands.keySet().stream().filter(s -> s.contains(args[0])).collect(Collectors.toList());
         }

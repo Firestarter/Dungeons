@@ -1,9 +1,9 @@
-package com.firestartermc.dungeons;
+package com.firestartermc.dungeons.lobby;
 
-import com.firestartermc.dungeons.commands.DungeonCommand;
-import com.firestartermc.dungeons.listeners.PlayerListener;
-import com.firestartermc.dungeons.util.NpcManager;
-import com.firestartermc.dungeons.util.PacketReader;
+import com.firestartermc.dungeons.lobby.commands.DungeonCommand;
+import com.firestartermc.dungeons.lobby.listeners.PlayerListener;
+import com.firestartermc.dungeons.lobby.util.NpcManager;
+import com.firestartermc.dungeons.lobby.util.PacketReader;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,6 +21,7 @@ public class DungeonsLobby extends JavaPlugin implements Listener {
 
     private PacketReader packetReader;
     private NpcManager npcManager;
+    private LobbyDungeonManager dungeonManager;
 
     @Override
     public void onEnable() {
@@ -31,6 +32,8 @@ public class DungeonsLobby extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
         this.npcManager = new NpcManager();
         this.packetReader = new PacketReader();
+        this.dungeonManager = new LobbyDungeonManager();
+        this.dungeonManager.syncAllData();
 
         // Command
         this.getCommand("dungeon").setExecutor(new DungeonCommand());
@@ -39,8 +42,6 @@ public class DungeonsLobby extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (this.npcManager.hasSpawned())
-                this.npcManager.sendSpawnPacket(player);
             this.packetReader.inject(player);
         }
     }
@@ -49,7 +50,6 @@ public class DungeonsLobby extends JavaPlugin implements Listener {
     public void onDisable() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             this.packetReader.unInject(player);
-            this.npcManager.sendDespawnPacket(player);
         }
         this.npcManager.despawn();
     }
@@ -64,5 +64,9 @@ public class DungeonsLobby extends JavaPlugin implements Listener {
 
     public static NpcManager getNpcManager() {
         return getDungeonLobby().npcManager;
+    }
+
+    public static LobbyDungeonManager getDungeonManager() {
+        return getDungeonLobby().dungeonManager;
     }
 }

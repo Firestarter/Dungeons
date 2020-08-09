@@ -9,14 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dungeons-server</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.firestartermc</groupId>
-            <artifactId>dungeons-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+    <artifactId>dungeons-common</artifactId>
 
 </project>

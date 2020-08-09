@@ -1,6 +1,6 @@
-package com.firestartermc.dungeons.listeners;
+package com.firestartermc.dungeons.lobby.listeners;
 
-import com.firestartermc.dungeons.DungeonsLobby;
+import com.firestartermc.dungeons.lobby.DungeonsLobby;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

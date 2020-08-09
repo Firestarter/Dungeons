@@ -1,7 +1,7 @@
-package com.firestartermc.dungeons.commands;
+package com.firestartermc.dungeons.lobby.commands;
 
-import com.firestartermc.dungeons.DungeonsLobby;
-import com.firestartermc.dungeons.commands.base.BaseMultiCommand;
+import com.firestartermc.dungeons.lobby.DungeonsLobby;
+import com.firestartermc.dungeons.lobby.commands.base.BaseMultiCommand;
 import org.bukkit.command.CommandSender;
 
 public class DungeonCommand extends BaseMultiCommand {

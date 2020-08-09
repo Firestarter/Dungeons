@@ -1,7 +1,6 @@
-package com.firestartermc.dungeons.commands;
+package com.firestartermc.dungeons.lobby.commands;
 
-import com.firestartermc.dungeons.DungeonsLobby;
-import org.bukkit.ChatColor;
+import com.firestartermc.dungeons.lobby.DungeonsLobby;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -22,9 +21,11 @@ public class ReloadCommand implements TabExecutor {
         // Reload config
         DungeonsLobby.getDungeonLobby().reloadConfig();
 
+        // Reload redis data
+        DungeonsLobby.getDungeonManager().syncAllData();
+
         // Reload npc
-        DungeonsLobby.getNpcManager().despawn();
-        DungeonsLobby.getNpcManager().spawn();
+        DungeonsLobby.getNpcManager().reload();
 
         commandSender.sendMessage(DungeonsLobby.PREFIX + "Reloaded dungeons");
         return true;
