@@ -1,7 +1,7 @@
 name: dungeons-lobby
 version: "0.1"
 author: FirestarterMC staff
-main: com.firestartermc.dungeons.DungeonsLobby
+main: com.firestartermc.dungeons.lobby.DungeonsLobby
 description: Firestarter's package of basic server utilities.
 website: https://firestartermc.com/opensource
 api-version: 1.16

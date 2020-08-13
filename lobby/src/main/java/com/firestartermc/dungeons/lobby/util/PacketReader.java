@@ -1,11 +1,10 @@
-package com.firestartermc.dungeons.util;
+package com.firestartermc.dungeons.lobby.util;
 
-import com.firestartermc.dungeons.DungeonsLobby;
+import com.firestartermc.dungeons.lobby.DungeonsLobby;
 import com.google.common.collect.ImmutableList;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import net.minecraft.server.v1_16_R1.Packet;
 import net.minecraft.server.v1_16_R1.PacketPlayInUseEntity;
 import net.minecraft.server.v1_16_R1.Vec3D;
 import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
@@ -20,12 +19,11 @@ import java.util.UUID;
 
 public class PacketReader {
 
-    private Channel channel;
-    private static Map<UUID, Channel> channels = new HashMap<>();
+    private static final Map<UUID, Channel> channels = new HashMap<>();
 
     public void inject(Player player) {
         CraftPlayer craftPlayer = (CraftPlayer) player;
-        channel = craftPlayer.getHandle().playerConnection.networkManager.channel;
+        Channel channel = craftPlayer.getHandle().playerConnection.networkManager.channel;
         channels.put(player.getUniqueId(), channel);
 
         if (channel.pipeline().get("PacketInjector") != null)
@@ -45,7 +43,7 @@ public class PacketReader {
             return;
         }
 
-        channel = channels.remove(player.getUniqueId());
+        Channel channel = channels.remove(player.getUniqueId());
         if (channel.pipeline().get("PacketInjector") != null) {
             channel.pipeline().remove("PacketInjector");
         }
@@ -54,6 +52,7 @@ public class PacketReader {
     public void readPacket(Player player, PacketPlayInUseEntity packet) {
         if (packet.getClass().getSimpleName().equalsIgnoreCase(PacketPlayInUseEntity.class.getSimpleName())) {
             int id = (int) getValue(packet, "a");
+
             if (DungeonsLobby.getNpcManager().getEntityId() != id) {
                 return; // not dungeon entity
             }
@@ -85,7 +84,6 @@ public class PacketReader {
 
             if (action.equalsIgnoreCase("INTERACT")) {
                 DungeonsLobby.getNpcManager().handleNpcClick(player);
-                player.sendMessage("You right clicked this dungeoneer");
             }
         }
     }

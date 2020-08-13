@@ -1,6 +1,7 @@
-package com.firestartermc.dungeons.util;
+package com.firestartermc.dungeons.lobby.util;
 
-import com.firestartermc.dungeons.DungeonsLobby;
+import com.firestartermc.dungeons.lobby.DungeonsLobby;
+import com.firestartermc.dungeons.lobby.gui.DungeonSelectorGui;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_16_R1.*;
@@ -20,9 +21,10 @@ public class NpcManager {
     private UUID uuid;
     private EntityPlayer mcPlayer;
     private SkinData skinData;
+    private boolean isHidden;
 
     public NpcManager() {
-        if (DungeonsLobby.getDungeonLobby().getConfig().contains("npc")) {
+        if (DungeonsLobby.getInstance().getConfig().contains("npc")) {
             spawn();
         }
     }
@@ -30,7 +32,8 @@ public class NpcManager {
     public void spawn() {
         this.uuid = UUID.randomUUID();
 
-        ConfigurationSection npc = DungeonsLobby.getDungeonLobby().getConfig().getConfigurationSection("npc");
+        ConfigurationSection npc = DungeonsLobby.getInstance().getConfig().getConfigurationSection("npc");
+        this.isHidden = npc.getBoolean("hidden", false);
         String name = ChatColor.translateAlternateColorCodes('&', npc.getString("name", "&bDungeoneer"));
 
         ConfigurationSection skinConfig = npc.getConfigurationSection("skin");
@@ -57,22 +60,35 @@ public class NpcManager {
 
         this.mcPlayer = new EntityPlayer(server, worldServer, gameProfile, new PlayerInteractManager(worldServer));
         this.mcPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendSpawnPacket(player);
+        }
     }
 
     public void despawn() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendDespawnPacket(player);
+        }
+
         this.mcPlayer = null;
         this.uuid = null;
     }
 
+    public void reload() {
+        despawn();
+        spawn();
+    }
+
     public void sendSpawnPacket(Player player) {
-        if (this.mcPlayer == null) return;
+        if (this.mcPlayer == null || isHidden) return;
         PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
         connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, this.mcPlayer));
         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(this.mcPlayer));
         connection.sendPacket(new PacketPlayOutEntityTeleport(this.mcPlayer));
         connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.mcPlayer, (byte) (this.mcPlayer.yaw * 256 / 360)));
 
-        Bukkit.getScheduler().runTaskLater(DungeonsLobby.getDungeonLobby(), () -> {
+        Bukkit.getScheduler().runTaskLater(DungeonsLobby.getInstance(), () -> {
             connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.mcPlayer));
         }, 20L);
     }
@@ -97,14 +113,14 @@ public class NpcManager {
     }
 
     public void move(Location loc) {
-        ConfigurationSection section = DungeonsLobby.getDungeonLobby().getConfig().getConfigurationSection("npc.location");
+        ConfigurationSection section = DungeonsLobby.getInstance().getConfig().getConfigurationSection("npc.location");
         section.set("world", loc.getWorld().getName());
         section.set("x", loc.getX());
         section.set("y", loc.getY());
         section.set("z", loc.getZ());
         section.set("yaw", loc.getYaw());
         section.set("pitch", loc.getPitch());
-        DungeonsLobby.getDungeonLobby().saveConfig();
+        DungeonsLobby.getInstance().saveConfig();
 
         if (this.mcPlayer != null) {
             this.mcPlayer.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -118,7 +134,35 @@ public class NpcManager {
     }
 
     public void handleNpcClick(Player player) {
+        DungeonSelectorGui.open(player);
+    }
 
+    public boolean hide() {
+        if (this.isHidden) {
+            return false;
+        }
+        this.isHidden = true;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendDespawnPacket(player);
+        }
+        DungeonsLobby.getInstance().getConfig().set("npc.hidden", true);
+        DungeonsLobby.getInstance().saveConfig();
+        return true;
+    }
+
+    public boolean show() {
+        if (!this.isHidden) {
+            return false;
+        }
+        this.isHidden = false;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendSpawnPacket(player);
+        }
+        DungeonsLobby.getInstance().getConfig().set("npc.hidden", false);
+        DungeonsLobby.getInstance().saveConfig();
+        return true;
     }
 
     // change skin

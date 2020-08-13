@@ -1,12 +1,13 @@
-package com.firestartermc.dungeons.commands;
+package com.firestartermc.dungeons.lobby.commands;
 
-import com.firestartermc.dungeons.DungeonsLobby;
-import org.bukkit.ChatColor;
+import com.firestartermc.dungeons.lobby.DungeonsLobby;
+import com.firestartermc.dungeons.shared.Static;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import xyz.nkomarn.kerosene.util.message.Message;
 
 import java.util.List;
 
@@ -15,18 +16,20 @@ public class ReloadCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (!commandSender.hasPermission("firestarter.dungeons.reload")) {
-            commandSender.sendMessage(DungeonsLobby.INSUFFICIENT_PERMISSIONS);
+            commandSender.sendMessage(Message.INSUFFICIENT_PERMISSIONS);
             return true;
         }
 
         // Reload config
-        DungeonsLobby.getDungeonLobby().reloadConfig();
+        DungeonsLobby.getInstance().reloadConfig();
+
+        // Reload redis data
+        DungeonsLobby.getDungeonManager().syncAllData();
 
         // Reload npc
-        DungeonsLobby.getNpcManager().despawn();
-        DungeonsLobby.getNpcManager().spawn();
+        DungeonsLobby.getNpcManager().reload();
 
-        commandSender.sendMessage(DungeonsLobby.PREFIX + "Reloaded dungeons");
+        commandSender.sendMessage(Static.PREFIX + "Reloaded dungeons");
         return true;
     }
 
