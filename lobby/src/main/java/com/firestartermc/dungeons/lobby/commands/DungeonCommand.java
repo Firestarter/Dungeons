@@ -1,7 +1,7 @@
 package com.firestartermc.dungeons.lobby.commands;
 
-import com.firestartermc.dungeons.lobby.DungeonsLobby;
 import com.firestartermc.dungeons.lobby.commands.base.BaseMultiCommand;
+import com.firestartermc.dungeons.shared.Static;
 import org.bukkit.command.CommandSender;
 
 public class DungeonCommand extends BaseMultiCommand {
@@ -13,7 +13,7 @@ public class DungeonCommand extends BaseMultiCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, String alias, String[] args) {
-        sender.sendMessage(DungeonsLobby.PREFIX + "Unknown command!"); // TODO replace with help text or something.
+        sender.sendMessage(Static.PREFIX + "Unknown command!"); // TODO replace with help text or something.
         return true;
     }
 }

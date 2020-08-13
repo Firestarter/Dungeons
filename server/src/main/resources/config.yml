@@ -1,0 +1,12 @@
+dungeons:
+  d1end:
+    display:
+      name: "&6&lEnd Dungeon"
+      lore:
+        - "&7The end or..."
+        - "&7the beginning?"
+      material: END_STONE
+    minPlayers: 1
+    maxPlayers: 20
+    maxInstances: 2
+    type: END_DUNGEON

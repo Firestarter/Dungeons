@@ -24,7 +24,7 @@ public class NpcManager {
     private boolean isHidden;
 
     public NpcManager() {
-        if (DungeonsLobby.getDungeonLobby().getConfig().contains("npc")) {
+        if (DungeonsLobby.getInstance().getConfig().contains("npc")) {
             spawn();
         }
     }
@@ -32,7 +32,7 @@ public class NpcManager {
     public void spawn() {
         this.uuid = UUID.randomUUID();
 
-        ConfigurationSection npc = DungeonsLobby.getDungeonLobby().getConfig().getConfigurationSection("npc");
+        ConfigurationSection npc = DungeonsLobby.getInstance().getConfig().getConfigurationSection("npc");
         this.isHidden = npc.getBoolean("hidden", false);
         String name = ChatColor.translateAlternateColorCodes('&', npc.getString("name", "&bDungeoneer"));
 
@@ -88,7 +88,7 @@ public class NpcManager {
         connection.sendPacket(new PacketPlayOutEntityTeleport(this.mcPlayer));
         connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.mcPlayer, (byte) (this.mcPlayer.yaw * 256 / 360)));
 
-        Bukkit.getScheduler().runTaskLater(DungeonsLobby.getDungeonLobby(), () -> {
+        Bukkit.getScheduler().runTaskLater(DungeonsLobby.getInstance(), () -> {
             connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.mcPlayer));
         }, 20L);
     }
@@ -113,14 +113,14 @@ public class NpcManager {
     }
 
     public void move(Location loc) {
-        ConfigurationSection section = DungeonsLobby.getDungeonLobby().getConfig().getConfigurationSection("npc.location");
+        ConfigurationSection section = DungeonsLobby.getInstance().getConfig().getConfigurationSection("npc.location");
         section.set("world", loc.getWorld().getName());
         section.set("x", loc.getX());
         section.set("y", loc.getY());
         section.set("z", loc.getZ());
         section.set("yaw", loc.getYaw());
         section.set("pitch", loc.getPitch());
-        DungeonsLobby.getDungeonLobby().saveConfig();
+        DungeonsLobby.getInstance().saveConfig();
 
         if (this.mcPlayer != null) {
             this.mcPlayer.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -146,8 +146,8 @@ public class NpcManager {
         for (Player player : Bukkit.getOnlinePlayers()) {
             sendDespawnPacket(player);
         }
-        DungeonsLobby.getDungeonLobby().getConfig().set("npc.hidden", true);
-        DungeonsLobby.getDungeonLobby().saveConfig();
+        DungeonsLobby.getInstance().getConfig().set("npc.hidden", true);
+        DungeonsLobby.getInstance().saveConfig();
         return true;
     }
 
@@ -160,8 +160,8 @@ public class NpcManager {
         for (Player player : Bukkit.getOnlinePlayers()) {
             sendSpawnPacket(player);
         }
-        DungeonsLobby.getDungeonLobby().getConfig().set("npc.hidden", false);
-        DungeonsLobby.getDungeonLobby().saveConfig();
+        DungeonsLobby.getInstance().getConfig().set("npc.hidden", false);
+        DungeonsLobby.getInstance().saveConfig();
         return true;
     }
 

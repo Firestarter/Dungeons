@@ -2,20 +2,20 @@ package com.firestartermc.dungeons.lobby;
 
 import com.firestartermc.dungeons.lobby.commands.DungeonCommand;
 import com.firestartermc.dungeons.lobby.listeners.PlayerListener;
+import com.firestartermc.dungeons.lobby.listeners.RedisListener;
 import com.firestartermc.dungeons.lobby.util.NpcManager;
 import com.firestartermc.dungeons.lobby.util.PacketReader;
+import com.firestartermc.dungeons.shared.Static;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.nkomarn.kerosene.data.redis.Redis;
 import xyz.nkomarn.kerosene.util.internal.Debug;
 
 public class DungeonsLobby extends JavaPlugin implements Listener {
 
-    public static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&6&lDungeons: &7");
-    public static final String INSUFFICIENT_PERMISSIONS = ChatColor.translateAlternateColorCodes('&', "&c&lError: &7Insufficient permissions");
-    public static final String DEBUG_CATEGORY_NPC_INTERACT = "dungeon:npc:interact";
+    public static final String DEBUG_CATEGORY_NPC_INTERACT = Static.DEBUG_PREFIX + "npc:interact";
 
     private static DungeonsLobby instance;
 
@@ -27,6 +27,7 @@ public class DungeonsLobby extends JavaPlugin implements Listener {
     public void onEnable() {
         instance = this;
         Debug.registerCategory(DEBUG_CATEGORY_NPC_INTERACT);
+        Redis.subscribe(Static.REDIS_SYNC_DUNGEONS);
 
         // Initialize
         this.saveDefaultConfig();
@@ -40,7 +41,9 @@ public class DungeonsLobby extends JavaPlugin implements Listener {
 
         // Listeners
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new RedisListener(this.dungeonManager), this);
 
+        // Inject packet reader for all online players
         for (Player player : Bukkit.getOnlinePlayers()) {
             this.packetReader.inject(player);
         }
@@ -52,21 +55,23 @@ public class DungeonsLobby extends JavaPlugin implements Listener {
             this.packetReader.unInject(player);
         }
         this.npcManager.despawn();
+
+        Redis.unsubscribe(Static.REDIS_SYNC_DUNGEONS);
     }
 
     public PacketReader getPacketReader() {
         return packetReader;
     }
 
-    public static DungeonsLobby getDungeonLobby() {
+    public static DungeonsLobby getInstance() {
         return instance;
     }
 
     public static NpcManager getNpcManager() {
-        return getDungeonLobby().npcManager;
+        return getInstance().npcManager;
     }
 
     public static LobbyDungeonManager getDungeonManager() {
-        return getDungeonLobby().dungeonManager;
+        return getInstance().dungeonManager;
     }
 }

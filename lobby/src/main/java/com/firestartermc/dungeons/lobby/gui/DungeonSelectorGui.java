@@ -1,7 +1,8 @@
 package com.firestartermc.dungeons.lobby.gui;
 
-import com.firestartermc.dungeons.common.dungeon.DungeonInfo;
 import com.firestartermc.dungeons.lobby.DungeonsLobby;
+import com.firestartermc.dungeons.shared.DungeonInfo;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import xyz.nkomarn.kerosene.gui.Gui;
 import xyz.nkomarn.kerosene.gui.GuiPosition;
@@ -37,21 +38,21 @@ public class DungeonSelectorGui extends Gui {
 
         AtomicInteger slot = new AtomicInteger(10);
         DungeonsLobby.getDungeonManager().getDungeons().stream()
-                .sorted(Comparator.comparingInt(DungeonInfo::getOrder))
+                .sorted(Comparator.comparingInt(DungeonInfo::getDisplayOrder))
                 .forEach(dungeon -> {
             addElement(getButton(slot.getAndIncrement(), dungeon));
         });
     }
 
-    @Override
-    protected void render(Player player) {
-        super.render(player);
-    }
-
     private ButtonComponent getButton(int slot, DungeonInfo dungeonInfo) {
+        Material material = Material.getMaterial(dungeonInfo.getMaterial());
+        if (material == null) {
+            material = Material.IRON_DOOR;
+        }
+
         return new ButtonComponent(
                 GuiPosition.fromSlot(slot),
-                new ItemBuilder(dungeonInfo.getMaterial())
+                new ItemBuilder(material)
                         .name(dungeonInfo.getName())
                         .build(),
                 event -> {

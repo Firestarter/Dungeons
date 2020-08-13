@@ -7,7 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import net.minecraft.server.v1_16_R1.PacketPlayInUseEntity;
 import net.minecraft.server.v1_16_R1.Vec3D;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import xyz.nkomarn.kerosene.util.internal.Debug;
