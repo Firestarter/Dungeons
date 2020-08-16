@@ -10,13 +10,13 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
-        DungeonsLobby.getNpcManager().sendSpawnPacket(event.getPlayer());
-        DungeonsLobby.getInstance().getPacketReader().inject(event.getPlayer());
+        DungeonsLobby.getNpcManager().sendSpawnPackets(event.getPlayer());
+//        DungeonsLobby.getInstance().getPacketReader().inject(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
-        DungeonsLobby.getInstance().getPacketReader().unInject(event.getPlayer());
+//        DungeonsLobby.getInstance().getPacketReader().unInject(event.getPlayer());
     }
 
 }

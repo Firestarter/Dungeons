@@ -1,6 +1,7 @@
 package com.firestartermc.dungeons.lobby.util;
 
 import com.firestartermc.dungeons.lobby.DungeonsLobby;
+import com.firestartermc.kerosene.util.internal.Debug;
 import com.google.common.collect.ImmutableList;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -9,7 +10,6 @@ import net.minecraft.server.v1_16_R1.PacketPlayInUseEntity;
 import net.minecraft.server.v1_16_R1.Vec3D;
 import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import xyz.nkomarn.kerosene.util.internal.Debug;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -53,9 +53,9 @@ public class PacketReader {
         if (packet.getClass().getSimpleName().equalsIgnoreCase(PacketPlayInUseEntity.class.getSimpleName())) {
             int id = (int) getValue(packet, "a");
 
-            if (DungeonsLobby.getNpcManager().getEntityId() != id) {
-                return; // not dungeon entity
-            }
+//            if (DungeonsLobby.getNpcManager().getEntityId() != id) {
+//                return; // not dungeon entity
+//            }
 
             String action = getValue(packet, "action").toString();
             boolean attack = action.equalsIgnoreCase("ATTACK");
@@ -83,7 +83,7 @@ public class PacketReader {
                 return;
 
             if (action.equalsIgnoreCase("INTERACT")) {
-                DungeonsLobby.getNpcManager().handleNpcClick(player);
+                // DungeonsLobby.getNpcManager().handleNpcClick(player);
             }
         }
     }

@@ -4,11 +4,11 @@ import com.firestartermc.dungeons.lobby.DungeonsLobby;
 import com.firestartermc.dungeons.shared.DungeonInfo;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import xyz.nkomarn.kerosene.gui.Gui;
-import xyz.nkomarn.kerosene.gui.GuiPosition;
-import xyz.nkomarn.kerosene.gui.components.buttons.ButtonComponent;
-import xyz.nkomarn.kerosene.gui.components.cosmetic.BorderComponent;
-import xyz.nkomarn.kerosene.util.item.ItemBuilder;
+import com.firestartermc.kerosene.gui.Gui;
+import com.firestartermc.kerosene.gui.GuiPosition;
+import com.firestartermc.kerosene.gui.components.buttons.ButtonComponent;
+import com.firestartermc.kerosene.gui.components.cosmetic.BorderComponent;
+import com.firestartermc.kerosene.util.item.ItemBuilder;
 
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;

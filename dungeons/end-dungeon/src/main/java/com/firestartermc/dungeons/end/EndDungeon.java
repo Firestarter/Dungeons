@@ -5,22 +5,22 @@ import com.firestartermc.dungeons.api.Dungeon;
 public class EndDungeon implements Dungeon {
 
     @Override
-    public boolean setup() {
-        return false;
+    public void setup() {
+
     }
 
     @Override
-    public boolean start() {
-        return false;
+    public void start() {
+
     }
 
     @Override
-    public boolean end() {
-        return false;
+    public void end() {
+
     }
 
     @Override
-    public boolean cleanup() {
-        return false;
+    public void cleanup() {
+
     }
 }

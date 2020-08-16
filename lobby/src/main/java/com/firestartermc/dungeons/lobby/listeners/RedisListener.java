@@ -2,9 +2,9 @@ package com.firestartermc.dungeons.lobby.listeners;
 
 import com.firestartermc.dungeons.lobby.LobbyDungeonManager;
 import com.firestartermc.dungeons.shared.Static;
+import com.firestartermc.kerosene.event.PubSubMessageEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import xyz.nkomarn.kerosene.event.PubSubMessageEvent;
 
 public class RedisListener implements Listener {
 

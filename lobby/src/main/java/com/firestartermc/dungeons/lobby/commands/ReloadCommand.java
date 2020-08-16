@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import xyz.nkomarn.kerosene.util.message.Message;
+import com.firestartermc.kerosene.util.message.Message;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class ReloadCommand implements TabExecutor {
         DungeonsLobby.getDungeonManager().syncAllData();
 
         // Reload npc
-        DungeonsLobby.getNpcManager().reload();
+        DungeonsLobby.getNpcManager().respawnAll();
 
         commandSender.sendMessage(Static.PREFIX + "Reloaded dungeons");
         return true;

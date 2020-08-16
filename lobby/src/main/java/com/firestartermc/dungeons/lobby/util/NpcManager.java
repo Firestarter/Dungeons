@@ -2,6 +2,7 @@ package com.firestartermc.dungeons.lobby.util;
 
 import com.firestartermc.dungeons.lobby.DungeonsLobby;
 import com.firestartermc.dungeons.lobby.gui.DungeonSelectorGui;
+import com.firestartermc.dungeons.lobby.npc.SkinData;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_16_R1.*;
@@ -56,7 +57,7 @@ public class NpcManager {
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer worldServer = ((CraftWorld) location.getWorld()).getHandle();
         GameProfile gameProfile = new GameProfile(this.uuid, name);
-        gameProfile.getProperties().put("textures", new Property("textures", this.skinData.texture, this.skinData.signature));
+        gameProfile.getProperties().put("textures", new Property("textures", this.skinData.getTexture(), this.skinData.getSignature()));
 
         this.mcPlayer = new EntityPlayer(server, worldServer, gameProfile, new PlayerInteractManager(worldServer));
         this.mcPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
@@ -165,23 +166,4 @@ public class NpcManager {
         return true;
     }
 
-    // change skin
-
-    public static class SkinData {
-        private final String texture;
-        private final String signature;
-
-        public SkinData(String texture, String signature) {
-            this.texture = texture;
-            this.signature = signature;
-        }
-
-        public String getTexture() {
-            return texture;
-        }
-
-        public String getSignature() {
-            return signature;
-        }
-    }
 }

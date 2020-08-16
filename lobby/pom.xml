@@ -18,12 +18,6 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>xyz.nkomarn</groupId>
-            <artifactId>Kerosene</artifactId>
-            <version>LATEST</version>
-            <scope>provided</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.spigotmc</groupId>
