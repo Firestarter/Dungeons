@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.firestartermc</groupId>
-            <artifactId>dungeons-shared</artifactId>
+            <artifactId>dungeons-common</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

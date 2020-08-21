@@ -1,0 +1,7 @@
+apply plugin: 'java-library'
+
+dependencies {
+    api project(':dungeons-common')
+    api 'com.destroystokyo.paper:paper-api:1.16.1-R0.1-SNAPSHOT'
+    api 'com.firestartermc:Kerosene:5.0-SNAPSHOT'
+}

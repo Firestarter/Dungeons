@@ -9,7 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dungeons-shared</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>dungeons-api</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.firestartermc</groupId>
+            <artifactId>dungeons-common</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 </project>

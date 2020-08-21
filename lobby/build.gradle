@@ -1,0 +1,8 @@
+apply plugin: 'java-library'
+
+dependencies {
+    api project(':dungeons-common')
+    api 'com.firestartermc:Kerosene:5.0-SNAPSHOT'
+
+    compileOnly 'org.spigotmc:spigot:1.16.1-R0.1-SNAPSHOT'
+}

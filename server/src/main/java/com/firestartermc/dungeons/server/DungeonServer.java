@@ -6,20 +6,30 @@ public class DungeonServer extends JavaPlugin {
 
     private static DungeonServer instance;
 
+    private ServerDungeonManager dungeonManager;
+
     @Override
     public void onEnable() {
         instance = this;
 
-        // Initialize
+        getLogger().info("Initializing");
         this.saveDefaultConfig();
+        this.dungeonManager = new ServerDungeonManager();
+
+        getLogger().info("Loading dungeons");
+        this.dungeonManager.initialize();
     }
 
     @Override
     public void onDisable() {
-
+        // unload dungeons
     }
 
-    public static DungeonServer getInstance() {
+    public static DungeonServer get() {
         return instance;
+    }
+
+    public static ServerDungeonManager getDungeonManager() {
+        return get().dungeonManager;
     }
 }

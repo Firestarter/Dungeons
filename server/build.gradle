@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':dungeons-common')
+    implementation project(':dungeons-api')
+    compile 'com.google.inject:guice:4.2.3'
+}

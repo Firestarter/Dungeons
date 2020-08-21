@@ -1,0 +1,11 @@
+main: com.firestartermc.dungeons.end.EndDungeon
+id: "end-dungeon"
+name: "End Dungeon"
+lore:
+  - "BlaBla something"
+  - "I'll even trow in a uwu for tech"
+material: ENDER_PEARL
+order: 50
+minPlayers: 2
+maxPlayers: 10
+maxInstances: 5

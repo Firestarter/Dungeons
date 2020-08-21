@@ -1,0 +1,13 @@
+rootProject.name = 'Dungeons'
+
+include(':dungeons-api')
+include(':dungeons-common')
+include(':dungeons-lobby')
+include(':dungeons-server')
+include(':end-dungeon')
+
+project(':dungeons-api').projectDir = file('api')
+project(':dungeons-common').projectDir = file('common')
+project(':dungeons-lobby').projectDir = file('lobby')
+project(':dungeons-server').projectDir = file('server')
+project(':end-dungeon').projectDir = file('dungeons/end-dungeon')
